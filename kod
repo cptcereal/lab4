@@ -1,0 +1,36 @@
+#import re
+
+##class Telebook(object):
+##    def __init__(self):
+##        self.telebook = {}
+##
+##    def add(self, name=None, number=None):
+
+def userInput():
+    prompt = "telebook> "
+    user_input = raw_input(prompt)
+    user_input = user_input.lower()
+##    user_choice = " ".join(user_choice.split())
+
+    user_input_list = user_input.split()
+##    user_input_list = re.sub("[^\w]", " ", user_input).split()
+##    print user_input
+##    print user_input_list
+##    return user_choice
+    return user_input_list
+
+def main():
+    while True:
+        user_input_list = userInput()
+        print user_input_list
+
+        if user_input_list[0] == "add":
+            print "im in"
+            print ""
+        else:
+            print "Error: The function you are trying to use doesn't exist,"
+            print "Functions avalble for use are: add, lookup, alias, change, save, load and quit."
+            print ""
+            continue
+
+main()
