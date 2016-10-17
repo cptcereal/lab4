@@ -3,6 +3,8 @@ class Telebook:
         self.telebookDic = {}
 
     def add(self, name, number):
+    #   Function that adds the name and number depending on
+    #   if the name or number is already in the telephone book.
         if self.telebookDic.has_key(name):
             print "The person you are tyring to add already exists."
         elif number in self.telebookDic.values():
@@ -11,37 +13,68 @@ class Telebook:
             self.telebookDic[name] = number
 
     def lookup(self, name):
+    #   Looks up the number for the user if the person who they are trying to look up
+    #   exists in the telephone book.
         if self.telebookDic.has_key(name):
             print self.telebookDic[name]
         else:
             print "The person you are trying to lookup doesn't exist."
 
-    def alias(self):
-        pass
+    def alias(self, name, alias_name):
+    #   Creates an alias with the same number
+    #   as another person who is already in the telephone book.
+        if self.telebookDic.has_key(name):
+            self.telebookDic[alias_name] = self.telebookDic.get(name)
+        else:
+            print "The person you are trying to add an alias to doesn't exist."
 
-    def change(self, name, number):
-        pass
+    def change(self, name, new_number):
+    #   Changes the number of a person, and all their aliases, in the telephone book.
+        current_number = self.telebookDic.get(name)
+        if current_number:
+            for name, number in self.telebookDic.items():
+                if number == current_number:
+                    self.telebookDic[name] = new_number
+        else:
+            print "The person whose number you are trying to change doesn't exist."
 
-    def save(self):
-        pass
+    def save(self, filename):
+    #   Saves the names and numbers in the telephone book to a file.
+        f = open(filename, "w")
+        for name, number in self.telebookDic.items():
+            line_to_write = number + ";" + name + ";" + "\n"
+            f.write(line_to_write)
+            
+    def load(self, filename):
+    #   Loads and replaces the current telephonebook with names and numbers from a file.
+        self.telebookDic = {}
+        f = open(filename, "r")
+        for line in f:
+            line = line.split(";")
+            number = line[0]
+            name = line[1]
+            self.telebookDic[name] = number
 
-    def load(self):
-        pass
-
-    
 def main():
+#   The main function of the telephone book that handles the user input and different kinds of errors.
     telebok=Telebook()
     
     while True:
-        user_input = raw_input("telebok> ")
-        user_input = user_input.lower().split()
+        user_input = raw_input("telebok> ").lower()
+        if user_input == "quit":
+            break
+        
+        user_input = user_input.split()
 
         try:
             getattr(telebok, user_input[0])(*user_input[1:])
-        except:
-            if user_input[0] == "quit":
-                break
-            elif TypeError:
-                print"Error"
-
+        except AttributeError:
+            print "The function you are trying to use doesn't exist, please try again."
+        except IndexError:
+            print "The function you are trying to use doesn't exist, please try again."
+        except IOError:
+            print "The file you are trying to load doesn't exist, please try again."
+        except TypeError:
+            print "You gave the function the wrong amount of arguments, please try again."
+     
 main()
