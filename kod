@@ -1,30 +1,47 @@
 class Telebook:
     def __init__(self):
-        self.telebook = {}
+        self.telebookDic = {}
 
-    def add(self, name=None, number=None):
-        print "add inne"
+    def add(self, name, number):
+        if self.telebookDic.has_key(name):
+            print "The person you are tyring to add already exists."
+        elif number in self.telebookDic.values():
+            print "The number you are trying to add is already used by another person."
+        else:
+            self.telebookDic[name] = number
 
+    def lookup(self, name):
+        if self.telebookDic.has_key(name):
+            print self.telebookDic[name]
+        else:
+            print "The person you are trying to lookup doesn't exist."
 
+    def alias(self):
+        pass
+
+    def change(self, name, number):
+        pass
+
+    def save(self):
+        pass
+
+    def load(self):
+        pass
+
+    
+def main():
+    telebok=Telebook()
+    
     while True:
         user_input = raw_input("telebok> ")
-        user_input = user_input.lower()
-        user_input = user_input.split()
-
-        print user_input
+        user_input = user_input.lower().split()
 
         try:
-            user_input = getattr(user, user_input[0])(*user_input[1:])
-        except AttributeError:
-            print "......"
+            getattr(telebok, user_input[0])(*user_input[1:])
+        except:
+            if user_input[0] == "quit":
+                break
+            elif TypeError:
+                print"Error"
 
-        print user_input
-
-##        if user_input[0] == "add":
-##            print "im in"
-##            print ""
-##        else:
-##            print "Error: The function you are trying to use doesn't exist,"
-##            print "Functions avalble for use are: add, lookup, alias, change, save, load and quit."
-##            print ""
-##            continue
+main()
